@@ -96,7 +96,6 @@ function getData($from_cache = false)
         $bitnodes_ch = curl_init(); 
         curl_setopt($bitnodes_ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($bitnodes_ch, CURLOPT_RETURNTRANSFER, true);
-
         curl_setopt($bitnodes_ch, CURLOPT_USERAGENT, 'Dogecoin Node Status Page');
         curl_setopt($bitnodes_ch, CURLOPT_URL, "https://chain.so/api/v2/get_info/".$currency);
         $exec_result = json_decode(curl_exec($bitnodes_ch), true);
