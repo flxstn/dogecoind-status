@@ -1,16 +1,18 @@
 <?php
 /**
- * Bitcoin Status Page
+ * Dogecoin Status Page
  *
  * @category File
- * @package  BitcoinStatus
- * @author   Craig Watson <craig@cwatson.org>
+ * @package  DogecoinStatus
+ * @author   Felix Stein <flxstn@flxstn.com>, Craig Watson <craig@cwatson.org>
  * @license  https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
- * @link     https://github.com/craigwatson/bitcoind-status
+ * @link     https://github.com/flxstn/dogecoind-status
+ *
+ * Many thanks to Craig Watson <craig@cwatson.org>, author of Bitcoin Status https://github.com/craigwatson/bitcoind-status
  */
 
 /**
- * Connects to Bitcoin daemon and retrieves information, then writes to cache
+ * Connects to Dogecoin daemon and retrieves information, then writes to cache
  *
  * @param string $from_cache Whether to get the data from cache or not
  *
@@ -82,18 +84,21 @@ function getData($from_cache = false)
         $data['ip_location'] = getGeolocation($data['node_ip'], 'all');
     }
 
-    // Bitcoin Daemon uptime
+    // Dogecoin Daemon uptime
     if (($config['display_bitcoind_uptime'] === true) || (strcmp(PHP_OS, "Linux") == 0)) {
         $data['bitcoind_uptime'] = getProcessUptime($config['bitcoind_process_name']);
     }
 
-    // Get max height from bitnodes.21.co
+
+    // Get max height from chain.so
     if ($config['display_max_height'] === true) {
-        $bitnodes_ch = curl_init();
+        $currency = isset($data['testnet']) && $data['testnet'] === true ? 'DOGETEST' : 'DOGE';
+        $bitnodes_ch = curl_init(); 
         curl_setopt($bitnodes_ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($bitnodes_ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($bitnodes_ch, CURLOPT_USERAGENT, 'Bitcoin Node Status Page');
-        curl_setopt($bitnodes_ch, CURLOPT_URL, "https://bitnodes.21.co/api/v1/snapshots/");
+
+        curl_setopt($bitnodes_ch, CURLOPT_USERAGENT, 'Dogecoin Node Status Page');
+        curl_setopt($bitnodes_ch, CURLOPT_URL, "https://chain.so/api/v2/get_info/".$currency);
         $exec_result = json_decode(curl_exec($bitnodes_ch), true);
 
         // Don't close handle if we reuse it
@@ -101,7 +106,7 @@ function getData($from_cache = false)
             curl_close($bitnodes_ch);
         }
 
-        $data['max_height'] = $exec_result['results'][0]['latest_height'];
+        $data['max_height'] = $exec_result['data']['blocks'];
         $data['node_height_percent'] = round(($data['blocks']/$data['max_height'])*100, 1);
     }
 
@@ -111,7 +116,7 @@ function getData($from_cache = false)
             $bitnodes_ch = curl_init();
             curl_setopt($bitnodes_ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($bitnodes_ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($bitnodes_ch, CURLOPT_USERAGENT, 'Bitcoin Node Status Page');
+            curl_setopt($bitnodes_ch, CURLOPT_USERAGENT, 'Dogecoin Node Status Page');
         }
 
         // Get node info
@@ -284,7 +289,7 @@ function getGeolocation($ip_address, $response_key)
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, "http://www.geoplugin.net/php.gp?ip=$ip_address");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'Bitcoin Node Status Page');
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Dogecoin Node Status Page');
     $exec_result = curl_exec($ch);
     $response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
