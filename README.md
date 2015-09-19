@@ -1,8 +1,6 @@
-# bitcoind-status
+# dogecoind-status
 
-[![Travis CI Status](https://travis-ci.org/craigwatson/bitcoind-status.svg?branch=master)](https://travis-ci.org/craigwatson/bitcoind-status)
-
-This is a small PHP application designed to display status and information from the Bitcoin node daemon.
+dogecoin-status is a fork of [bitcoind-status](https://github.com/craigwatson/bitcoind-status), designed to display status and information from the Dogecoin node daemon.
 
 #### Table of Contents
 
@@ -16,9 +14,9 @@ This is a small PHP application designed to display status and information from 
 
 To run the application, you will need:
 
-  * A Bitcoin node with RPC enabled.
+  * A Dogecoin node with RPC enabled.
   * A web-server with PHP installed.
-  * The PHP `curl` module - this is used to make RPC calls to the Bitcoin daemon.
+  * The PHP `curl` module - this is used to make RPC calls to the Dogecoin daemon.
 
 ### PHP Support
 
@@ -62,12 +60,9 @@ below. Icon images for Bitnodes.21.co and Blockchain.info are included in the `i
 
 ## Contributing
 
-[![Buy me a beer!](https://cdn.changetip.com/img/graphics/Beer_Graphic.png)](https://www.changetip.com/tipme/craigwatson1987)
+Contributions and testing reports are extremely welcome. Please submit a pull request or issue on [GitHub](https://github.com/flxstn/dogecoind-status), and make sure that your code conforms to the PEAR PHP coding standards.
 
-Contributions and testing reports are extremely welcome. Please submit a pull request or issue on [GitHub](https://github.com/craigwatson/bitcoind-status), and make sure
-that your code conforms to the PEAR PHP coding standards (Travis CI will test your pull request when it's sent).
-
-I accept tips via [ChangeTip](https://www.changetip.com/tipme/craigwatson1987) in any currency - if you would like to buy me a beer, please do!
+Craig accepts tips via [ChangeTip](https://www.changetip.com/tipme/craigwatson1987) in any currency - if you would like to buy him a beer, please do!
 
 ## Advanced Options
 
@@ -89,7 +84,7 @@ The `config.php` file also contains lots of options to control how the applicati
 | Value                   | Type    | Default   | Explanation                                 |
 |-------------------------|---------|-----------|---------------------------------------------|
 | `display_donation_text` | Boolean | `true`    | Display text to encourage donations         |
-| `donation_address`      | String  | `not_set` | Bitcoin address to advertise for donations  |
+| `donation_address`      | String  | `not_set` | Dogecoin address to advertise for donations  |
 | `donation_amount`       | String  | `0.001`   | Donation amount - not currently implemented |
 
 ### Peers
@@ -127,7 +122,7 @@ The `config.php` file also contains lots of options to control how the applicati
 | `display_version`         | Boolean | `true`    | Display node `bitcoind` version                                                                                 |
 | `display_github_ribbon`   | Boolean | `true`    | Displays the 'Fork me on GitHub' ribbon                                                                         |
 | `display_max_height`      | Boolean | `false`   | Displays the node height as a percentage of network height                                                      |
-| `use_bitcoind_ip`         | Boolean | `true`    | Use the Bitcoin daemon to get the public IP, instead of `$_SERVER`                                              | 
+| `use_bitcoind_ip`         | Boolean | `true`    | Use the Dogecoin daemon to get the public IP, instead of `$_SERVER`                                              | 
 | `intro_text`              | String  | `not_set` | Introductory text to display above the node statistics.                                                         |
 | `display_bitnodes_info`   | Boolean | `false`   | Displays various information via the bitnodes.21.co API                                                            |
 | `display_chart`           | String  | `false`   | Displays a chart showing the stats collected by the stats.php script                                            |
@@ -146,7 +141,7 @@ The `config.php` file also contains lots of options to control how the applicati
 
 | Value                     | Type    | Default    | Explanation                                                 |
 |---------------------------|---------|------------|-------------------------------------------------------------|
-| `display_bitcoind_uptime` | Boolean | `true`     | Displays the uptime of the Bitcoin daemon                   |
+| `display_bitcoind_uptime` | Boolean | `true`     | Displays the uptime of the Dogecoin daemon                   |
 | `bitcoind_process_name`   | String  | `bitcoind` | Name to use when getting the bitcoin daemon process' uptime |
 
 ### System
