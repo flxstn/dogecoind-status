@@ -1,12 +1,14 @@
 <?php
 /**
- * Bitcoin Status Page - Stats
+ * Dogecoin Status Page - Stats
  *
  * @category File
- * @package  BitcoinStatus
- * @author   Craig Watson <craig@cwatson.org>
+ * @package  DogecoinStatus
+ * @author   Felix Stein <flxstn@flxstn.com>, Craig Watson <craig@cwatson.org>
  * @license  https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
- * @link     https://github.com/craigwatson/bitcoind-status
+ * @link     https://github.com/flxstn/dogecoind-status
+ *
+ * Many thanks to Craig Watson <craig@cwatson.org>, author of Bitcoin Status https://github.com/craigwatson/bitcoind-status
  */
 
 require_once './php/config.php';
