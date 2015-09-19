@@ -106,7 +106,7 @@
 <?php if (isset($data['max_height']) === true) { ?>
       <p class="stat"><span class="label">Network Height:</span> <?php echo $data['max_height']; ?></p>
 <?php } ?>
-      <p class="stat"><span class="label">Difficulty:</span> <?php echo number_format($data['difficulty'],3); ?></p>
+      <p class="stat"><span class="label">Difficulty:</span> <?php echo number_format($data['difficulty'],8); ?></p>
 <?php if (isset($config['display_testnet']) && $config['display_testnet']) { ?>
       <p class="stat"><span class="label">Testnet:</span> <?php echo ($data['testnet']) ? "Yes" : "No"; ?></p>
 <?php } ?>   
@@ -116,7 +116,7 @@
       <p class="stat"><span class="label">Node Version:</span> <?php echo $data['version']; ?></p>
 <?php } ?>
 <?php if (isset($data['bitcoind_uptime'])) { ?>
-      <p class="stat"><span class="label">Bitcoin Daemon Uptime:</span> <?php echo $data['bitcoind_uptime']; ?></p>
+      <p class="stat"><span class="label">Dogecoin Daemon Uptime:</span> <?php echo $data['bitcoind_uptime']; ?></p>
 <?php } ?>
 <?php if (isset($data['ip_location'])) { ?>
       <p class="stat">
@@ -187,13 +187,13 @@
   <div id="footer" class="pure-u-1-1 pure-u-md-1-1 pure-u-lg-1-1">
     <hr />
     <p>
-       <a href="https://github.com/craigwatson/bitcoind-status">Dogecoin Daemon Status Page</a>, a fork of <a href="https://github.com/craigwatson/bitcoind-status">Bitcoin Daemon Status Page</a> by <a href="http://www.cwatson.org">Craig Watson</a>, distributed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a><br />
+       <a href="https://github.com/flxstn/dogecoind-status" target="_blank">Dogecoin Daemon Status Page</a>, a fork of <a href="https://github.com/craigwatson/bitcoind-status" target="_blank">Bitcoin Daemon Status Page</a> by <a href="http://www.cwatson.org" target="_blank">Craig Watson</a>, distributed under the <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a><br />
        Donate: <a href="http://blocktrail.com/address/174N2KwMzKYvYkCSx1kezrzfSQuJQEZY9T" target="_blank">174N2KwMzKYvYkCSx1kezrzfSQuJQEZY9T</a><br />
-       <a href="http://www.geoplugin.com/geolocation/" target="_new">IP Geolocation</a> by <a href="http://www.geoplugin.com/" target="_new">geoPlugin</a><br />
+       <a href="http://www.geoplugin.com/geolocation/" target="_blank">IP Geolocation</a> by <a href="http://www.geoplugin.com/" target="_new">geoPlugin</a><br />
     </p>
     <?php if ($config['display_github_ribbon'] === TRUE) { ?>
       <p>
-        <span id="forkongithub"><a href="https://github.com/craigwatson/bitcoind-status">Fork me on GitHub</a></span>
+        <span id="forkongithub"><a href="https://github.com/flxstn/dogeoind-status" target="_blank">Fork me on GitHub</a></span>
       </p>
     <?php } ?>
   </div>
