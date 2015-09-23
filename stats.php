@@ -15,7 +15,9 @@ require_once './php/config.php';
 
 // Die if we're not in the whitelist
 if (!in_array($_SERVER['REMOTE_ADDR'], $config['stats_whitelist'])) {
-    die($_SERVER['REMOTE_ADDR'] . " is not in the whitelist");
+    // Die in silence
+    die();
+    //die($_SERVER['REMOTE_ADDR'] . " is not in the whitelist");
 }
 
 // Clear data if variable present
