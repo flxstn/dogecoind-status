@@ -31,7 +31,7 @@ $config = array(
 
   // Cache
   'use_cache'               => true,
-  'cache_file'              => '/tmp/bitcoind-status.cache',
+  'cache_file'              => '/tmp/dogecoind-status.cache',
   'max_cache_time'          => 300,
   'nocache_whitelist'       => array('127.0.0.1'),
 
@@ -52,20 +52,24 @@ $config = array(
   'display_chart'           => false,
   'node_links'              => array(),
 
+  // Server Performance
+  'display_memory_usage'    => false,
+  'display_cpu_usage'       => false,
+
   // Stats
   'stats_whitelist'         => array('127.0.0.1'),
-  'stats_file'              => '/tmp/bitcoind-status.data',
+  'stats_file'              => '/tmp/dogecoind-status.data',
   'stats_max_age'           => '604800',
   'stats_min_data_points'   => 5,
 
   // Uptime
   'display_bitcoind_uptime' => false,
-  'bitcoind_process_name'   => 'bitcoind',
+  'bitcoind_process_name'   => 'dogecoind',
 
   // System
   'date_format'             => 'H:i:s T, j F Y ',
   'timezone'                => null,
-  'stylesheet'              => 'v2-light.css',
+  'stylesheet'              => 'v2-light-doge.css',
   'debug'                   => false,
   'admin_email'             => 'admin@example.com',
 );

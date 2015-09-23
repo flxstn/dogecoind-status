@@ -138,6 +138,13 @@
           <?php if (strcmp(strtolower($country_name), "unavailable") != 0) { ?><img src="img/blank.gif" class="flag flag-<?php echo $country_code; ?>" alt="<?php echo $country_name; ?>" /><?php } ?> <?php echo $country_name . "\n"; ?>
       </p>
 <?php } ?>
+<?php if (isset($config['display_memory_usage']) && $config['display_memory_usage']) { ?>
+      <p class="stat"><span class="label">Memory Usage:</span> <?php echo $data['memory_usage']; ?></p>
+<?php } ?> 
+<?php if (isset($config['display_cpu_usage']) && $config['display_cpu_usage']) { ?>
+      <p class="stat"><span class="label">CPU Usage:</span> <?php echo $data['cpu_usage']; ?></p>
+      <p class="stat"><span class="label">Number of CPU Cores:</span> <?php echo $data['cpu_count']; ?></p>
+<?php } ?> 
 <?php if (isset($data['free_disk_space'])) { ?>
       <p class="stat"><span class="label">Free Disk Space:</span> <?php echo $data['free_disk_space']; ?></p>
 <?php } ?>

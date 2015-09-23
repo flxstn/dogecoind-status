@@ -68,7 +68,7 @@ function getData($from_cache = false)
         // Use bitcoind IP
         if ($config['use_bitcoind_ip'] === true) {
             $net_info = $bitcoin->getnetworkinfo();
-            $data['node_ip'] = $net_info['localaddresses'][0]['address'];
+            $data['node_ip'] = isset($net_info['localaddresses'][0]['address']) ? $net_info['localaddresses'][0]['address'] : 'n/a';
         } else {
             $data['node_ip'] = $_SERVER['SERVER_ADDR'];
         }
@@ -131,6 +131,34 @@ function getData($from_cache = false)
     // Get chart data
     if (($config['display_chart'] === true) & (is_file($config['stats_file']))) {
         $data['chart'] = json_decode(file_get_contents($config['stats_file']), true);
+    }
+
+    // Get memory usage
+    if($config['display_memory_usage'] === true) {
+        $free = shell_exec('free');
+        $free = (string)trim($free);
+        $free_arr = explode("\n", $free);
+        $mem = explode(" ", $free_arr[1]);
+        $mem = array_filter($mem);
+        $mem = array_merge($mem);
+
+        $fh = fopen('/proc/meminfo','r');
+        $total_mem = 0;
+        while ($line = fgets($fh)) {
+            $pieces = array();
+            if (preg_match('/^MemTotal:\s+(\d+)\skB$/', $line, $pieces)) {
+            $total_mem = $pieces[1];
+            break;
+            }
+        }
+        fclose($fh);
+        $data['memory_usage'] = round(($mem[2]/$mem[1]*100), 2).'% of '.round(($total_mem / 1000)).'MB';        
+    }
+
+    // Get CPU usage
+    if($config['display_cpu_usage'] === true) {
+        $data['cpu_count'] = getSystemCores();
+        $data['cpu_usage'] = systemLoadInPercent($data['cpu_count'], $interval = 1).'%'; 
     }
 
     writeToCache($data);
@@ -307,6 +335,7 @@ function getGeolocation($ip_address, $response_key)
 }
 
 /**
+ *
  * Generate "time ago" text from timestamp.
  *
  * @param Int $ptime UNIX timestamp
@@ -343,4 +372,48 @@ function elapsedTime($ptime)
             return $r . ' ' . ($r > 1 ? $a_plural[$str] : $str);
         }
     }
+
+/**
+ * Get number of CPU cores
+ * 
+ * @see http://icesquare.com/wordpress/phphow-to-get-the-number-of-cpu-cores-in-fedora-ubuntu-and-freebsd/
+ */
+function getSystemCores() 
+{
+    $cmd = "uname";
+    $OS = strtolower(trim(shell_exec($cmd)));
+
+    switch($OS){
+       case('linux'):
+          $cmd = "cat /proc/cpuinfo | grep processor | wc -l";
+          break;
+       case('freebsd'):
+          $cmd = "sysctl -a | grep 'hw.ncpu' | cut -d ':' -f2";
+          break;
+       default:
+          unset($cmd);
+    }
+
+    if ($cmd != ''){
+       $cpuCoreNo = intval(trim(shell_exec($cmd)));
+    }
+    return empty($cpuCoreNo) ? 1 : $cpuCoreNo;
+}
+
+/**
+ * Calculates the processor load in %
+ * @see sys_getloadavg
+ * @author Ivan Gospodinow
+ * @site ivangospodinow.com
+ * @date 07.02.2013
+ * @param int $coreCount
+ * @param int $interval
+ * @return float
+ */
+function systemLoadInPercent($coreCount = 2,$interval = 1)
+{
+    $rs = sys_getloadavg();
+    $interval = $interval >= 1 && 3 <= $interval ? $interval : 1;
+    $load  = $rs[$interval];
+    return round(($load * 100) / $coreCount,2);
 }
