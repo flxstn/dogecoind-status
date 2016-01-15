@@ -97,15 +97,15 @@ function getData($from_cache = false)
         curl_setopt($bitnodes_ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($bitnodes_ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($bitnodes_ch, CURLOPT_USERAGENT, 'Blackcoin Node Status Page');
-        curl_setopt($bitnodes_ch, CURLOPT_URL, "https://chain.so/api/v2/get_info/".$currency);
-        $exec_result = json_decode(curl_exec($bitnodes_ch), true);
+        curl_setopt($bitnodes_ch, CURLOPT_URL, "http://chainz.cryptoid.info/blk/api.dws?q=getblockcount");
+        $exec_result = curl_exec($bitnodes_ch);
 
         // Don't close handle if we reuse it
         if ($config['display_bitnodes_info'] !== true) {
             curl_close($bitnodes_ch);
         }
 
-        $data['max_height'] = $exec_result['data']['blocks'];
+        $data['max_height'] = (int)$exec_result;
         $data['node_height_percent'] = round(($data['blocks']/$data['max_height'])*100, 1);
     }
 
