@@ -14,7 +14,7 @@ $config = array(
   'rpc_user'                => 'rpcuser',
   'rpc_pass'                => 'rpcpass',
   'rpc_host'                => 'localhost',
-  'rpc_port'                => '8332',
+  'rpc_port'                => '15715',
   'rpc_ssl'                 => false,
   'rpc_ssl_ca'              => null,
 
@@ -31,7 +31,7 @@ $config = array(
 
   // Cache
   'use_cache'               => true,
-  'cache_file'              => '/tmp/dogecoind-status.cache',
+  'cache_file'              => '/tmp/blackcoind-status.cache',
   'max_cache_time'          => 300,
   'nocache_whitelist'       => array('127.0.0.1'),
 
@@ -58,18 +58,18 @@ $config = array(
 
   // Stats
   'stats_whitelist'         => array('127.0.0.1'),
-  'stats_file'              => '/tmp/dogecoind-status.data',
+  'stats_file'              => '/tmp/blackcoind-status.data',
   'stats_max_age'           => '604800',
   'stats_min_data_points'   => 5,
 
   // Uptime
   'display_bitcoind_uptime' => false,
-  'bitcoind_process_name'   => 'dogecoind',
+  'bitcoind_process_name'   => 'blackcoind',
 
   // System
   'date_format'             => 'H:i:s T, j F Y ',
   'timezone'                => null,
-  'stylesheet'              => 'v2-light-doge.css',
+  'stylesheet'              => 'v2-light.css',
   'debug'                   => false,
   'admin_email'             => 'admin@example.com',
 );

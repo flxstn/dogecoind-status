@@ -1,9 +1,9 @@
 <?php
 /**
- * Dogecoin Status Page
+ * Blackcoin Status Page
  *
  * @category File
- * @package  DogecoinStatus
+ * @package  BlackcoinStatus
  * @author   Felix Stein <flxstn@flxstn.com>, Craig Watson <craig@cwatson.org>
  * @license  https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @link     https://github.com/flxstn/dogecoind-status
@@ -12,7 +12,7 @@
  */
 
 /**
- * Connects to Dogecoin daemon and retrieves information, then writes to cache
+ * Connects to Blackcoin daemon and retrieves information, then writes to cache
  *
  * @param string $from_cache Whether to get the data from cache or not
  *
@@ -84,7 +84,7 @@ function getData($from_cache = false)
         $data['ip_location'] = getGeolocation($data['node_ip'], 'all');
     }
 
-    // Dogecoin Daemon uptime
+    // Blackcoin Daemon uptime
     if (($config['display_bitcoind_uptime'] === true) || (strcmp(PHP_OS, "Linux") == 0)) {
         $data['bitcoind_uptime'] = getProcessUptime($config['bitcoind_process_name']);
     }
@@ -96,7 +96,7 @@ function getData($from_cache = false)
         $bitnodes_ch = curl_init(); 
         curl_setopt($bitnodes_ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($bitnodes_ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($bitnodes_ch, CURLOPT_USERAGENT, 'Dogecoin Node Status Page');
+        curl_setopt($bitnodes_ch, CURLOPT_USERAGENT, 'Blackcoin Node Status Page');
         curl_setopt($bitnodes_ch, CURLOPT_URL, "https://chain.so/api/v2/get_info/".$currency);
         $exec_result = json_decode(curl_exec($bitnodes_ch), true);
 
@@ -115,7 +115,7 @@ function getData($from_cache = false)
             $bitnodes_ch = curl_init();
             curl_setopt($bitnodes_ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($bitnodes_ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($bitnodes_ch, CURLOPT_USERAGENT, 'Dogecoin Node Status Page');
+            curl_setopt($bitnodes_ch, CURLOPT_USERAGENT, 'Blackcoin Node Status Page');
         }
 
         // Get node info
@@ -268,7 +268,7 @@ function writeToCache($data)
 function generateDonationImage()
 {
     global $config;
-    $alt_text = 'Donate ' . $config['donation_amount'] . ' BTC to ' . $config['donation_address'];
+    $alt_text = 'Donate ' . $config['donation_amount'] . ' BLK to ' . $config['donation_address'];
     return "\n" . '<img src="https://chart.googleapis.com/chart?chld=H|2&chs=225x225&cht=qr&chl=' . $config['donation_address'] . '" alt="' . $alt_text . '" />' . "\n";
 }
 
@@ -316,7 +316,7 @@ function getGeolocation($ip_address, $response_key)
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, "http://www.geoplugin.net/php.gp?ip=$ip_address");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'Dogecoin Node Status Page');
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Blackcoin Node Status Page');
     $exec_result = curl_exec($ch);
     $response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
@@ -372,6 +372,7 @@ function elapsedTime($ptime)
             return $r . ' ' . ($r > 1 ? $a_plural[$str] : $str);
         }
     }
+}
 
 /**
  * Get number of CPU cores
