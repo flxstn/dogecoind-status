@@ -106,7 +106,8 @@
 <?php if (isset($data['max_height']) === true) { ?>
       <p class="stat"><span class="label">Network Height:</span> <?php echo $data['max_height']; ?></p>
 <?php } ?>
-      <p class="stat"><span class="label">Difficulty:</span> <?php echo number_format($data['difficulty'],8); ?></p>
+      <p class="stat"><span class="label">PoW Difficulty:</span> : <?php echo number_format($data['difficulty']['proof-of-work'],8); ?></p>
+      <p class="stat"><span class="label">PoS Difficulty:</span> : <?php echo number_format($data['difficulty']['proof-of-stake'],8); ?></p>
 <?php if (isset($config['display_testnet']) && $config['display_testnet']) { ?>
       <p class="stat"><span class="label">Testnet:</span> <?php echo ($data['testnet']) ? "Yes" : "No"; ?></p>
 <?php } ?>   
