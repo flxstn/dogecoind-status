@@ -59,6 +59,14 @@ function getData($from_cache = false)
         return $return_data;
     }
 
+    // Get mempool info 
+    $mempool_data = $bitcoin->getmempoolinfo();
+
+    $data['mempool_size'] = $mempool_data['size'];
+    $data['mempool_bytes'] = (int)$mempool_data['bytes'] / 1e6;
+    $data['mempool_usage'] = $mempool_data['usage'];
+    $data['mempool_minfee'] = $mempool_data['mempoolminfee'];
+
     // Get free disk space
     if ($config['display_free_disk_space'] === true) {
         $data['free_disk_space'] = getFreeDiskSpace();
@@ -372,6 +380,7 @@ function elapsedTime($ptime)
             return $r . ' ' . ($r > 1 ? $a_plural[$str] : $str);
         }
     }
+}
 
 /**
  * Get number of CPU cores

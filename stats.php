@@ -11,10 +11,10 @@
  * Many thanks to Craig Watson <craig@cwatson.org>, author of Bitcoin Status https://github.com/craigwatson/bitcoind-status
  */
 
-require_once './php/config.php';
+require_once 'php/config.php';
 
 // Die if we're not in the whitelist
-if (!in_array($_SERVER['REMOTE_ADDR'], $config['stats_whitelist'])) {
+if (isset($_SERVER['REMOTE_ADDR']) && !in_array($_SERVER['REMOTE_ADDR'], $config['stats_whitelist'])) {
     // Die in silence
     die();
     //die($_SERVER['REMOTE_ADDR'] . " is not in the whitelist");
@@ -39,7 +39,7 @@ if (isset($_GET['view'])) {
 }
 
 // Include EasyBitcoin library and set up connection
-require_once './php/easybitcoin.php';
+require_once 'php/easybitcoin.php';
 $bitcoin = new Bitcoin($config['rpc_user'], $config['rpc_pass'], $config['rpc_host'], $config['rpc_port']);
 
 // Setup SSL if configured
@@ -53,8 +53,18 @@ if (!$new_raw_data) {
     die("RPC Error");
 }
 
+$mempool_data = $bitcoin->getmempoolinfo();
 // Append to array
-$data[] = array('time' => time(), 'connections' => $new_raw_data['connections']);
+$data[] = array(
+    'time' => time(), 
+    'connections' => $new_raw_data['connections'], 
+    'mempool_size' => $mempool_data['size'], 
+    'mempool_bytes' => (int)$mempool_data['bytes'] / 1e6, 
+    //'mempool_usage' => $mempool_data['usage'],
+    //'mempool_minfee' => $mempool_data['mempoolminfee']
+    );
+// Append to array
+//$data[] = array('time' => time(), 'connections' => $new_raw_data['connections']);
 
 // Purge old data
 for ($i = 0; $i < count($data); $i++) {

@@ -50,6 +50,64 @@
         drawChart();
       });
     </script>
+        <script type="text/javascript">
+      google.setOnLoadCallback(drawMempoolChart);
+      function drawMempoolChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Date', 'Transactions in Mempool'],
+<?php
+    for ($i = 0; $i < count($data['chart']); $i++) {
+       if ($i === (count($data['chart'])-1)) { $end = ''; } else { $end = ','; }
+       echo "\t  [new Date(" . $data['chart'][$i]['time'] . "*1000)," . $data['chart'][$i]['mempool_size'] . "]" . $end . "\n";
+    }
+?>
+        ]);
+
+        var options = { title: '', legend: 'bottom'};
+        var chart = new google.visualization.LineChart(document.getElementById('mempool_chart'));
+        chart.draw(data, options);
+      }
+
+      $(window).resize(function() {
+        if(this.resizeTO) clearTimeout(this.resizeTO);
+          this.resizeTO = setTimeout(function() {
+            $(this).trigger('resizeEnd');
+          }, 250);
+      });
+
+      $(window).on('resizeEnd', function() {
+        drawMempoolChart();
+      });
+    </script>
+    <script type="text/javascript">
+      google.setOnLoadCallback(drawMempoolSizeChart);
+      function drawMempoolSizeChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Date', 'Mempool Size'],
+<?php
+    for ($i = 0; $i < count($data['chart']); $i++) {
+       if ($i === (count($data['chart'])-1)) { $end = ''; } else { $end = ','; }
+       echo "\t  [new Date(" . $data['chart'][$i]['time'] . "*1000)," . $data['chart'][$i]['mempool_bytes'] . "]" . $end . "\n";
+    }
+?>
+        ]);
+
+        var options = { title: '', legend: 'bottom'};
+        var chart = new google.visualization.LineChart(document.getElementById('mempool_size_chart'));
+        chart.draw(data, options);
+      }
+
+      $(window).resize(function() {
+        if(this.resizeTO) clearTimeout(this.resizeTO);
+          this.resizeTO = setTimeout(function() {
+            $(this).trigger('resizeEnd');
+          }, 250);
+      });
+
+      $(window).on('resizeEnd', function() {
+        drawMempoolSizeChart();
+      });
+    </script>
 <?php }} ?>
 </head>
 <body>
@@ -78,28 +136,19 @@
   </div>
 
   <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3 image">
-    <?php if (strcmp($config['donation_address'],'not_set') == 0){ echo '<img src="img/logo.png" alt="Dogecoin Logo" class="logo" />'; } else { echo generateDonationImage(); } ?>
-    <?php if ((is_array($config['node_links'])) & (count($config['node_links'] > 0))) { echo '<div style="padding:10px;text-align:center"><p class="stat"><span class="label">Node Links</span></p>'; foreach ($config['node_links'] as $node_link) { ?>
-        <a target="_blank" title="<?php echo $node_link['name']; ?>" href="<?php echo $node_link['link']; ?>"><?php if(isset($node_link['image'])) { ?><img src="<?php echo $node_link['image']; ?>" style="float: left;margin-left: 20px" alt="<?php echo $node_link['name']; ?>"/><?php } else { echo $node_link['name']; } ?></a>
-    <?php } echo '</div>'; } ?>
-  </div>
-
-  <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-2-3">
-<?php if (isset($data['error'])) { ?>
+  <?php if (isset($data['error'])) { ?>
     <div class="red">
       <h2>There has been an error communicating with the Dogecoin Daemon</h2>
       <pre><?php echo $data['error']; ?></pre>
       <p>Please report this to <a href="mailto:<?php echo $config['admin_email']; ?>"><?php echo $config['admin_email']; ?></a></p>
     </div>
 <?php } else { ?>
-      <p class="stat"><span class="label">Number of Connections:</span> <?php echo $data['connections']; ?></p>
-<?php if (isset($data['chart'])) { if (count($data['chart']) > $config['stats_min_data_points']) { ?>
-      <div id="connections_chart" style="width: 100%; height: 20%"></div>
-<?php } } ?>
-<?php if (isset($data['bitnodes_info']) === true) { ?>
-      <p class="stat"><span class="label">Average Dogenodes Latency:</span> <?php if ($data['bitnodes_info']['latest_latency']['v'] !== 0) { echo $data['bitnodes_info']['latest_latency']['v'] . "ms"; } else { echo "Unavailable"; } ?></p>
-<?php } ?>
-      <p class="stat">
+    <?php if (strcmp($config['donation_address'],'not_set') == 0){ echo '<img src="img/logo.png" alt="Dogecoin Logo" class="logo" />'; } else { echo generateDonationImage(); } ?>
+    <?php if ((is_array($config['node_links'])) & (count($config['node_links'] > 0))) { echo '<div style="padding:10px;text-align:center"><p class="stat"><span class="label">Node Links</span></p>'; foreach ($config['node_links'] as $node_link) { ?>
+        <a target="_blank" title="<?php echo $node_link['name']; ?>" href="<?php echo $node_link['link']; ?>"><?php if(isset($node_link['image'])) { ?><img src="<?php echo $node_link['image']; ?>" style="float: left;margin-left: 20px" alt="<?php echo $node_link['name']; ?>"/><?php } else { echo $node_link['name']; } ?></a>
+    <?php } echo '</div>'; } ?>
+
+          <p class="stat">
           <span class="label">Node Height:</span> <?php echo $data['blocks']; ?>
           <?php if($config['display_max_height'] === true){ ?> (<?php echo $data['node_height_percent'] ?>%)<?php } ?>
       </p>
@@ -118,7 +167,7 @@
 <?php if (isset($data['bitcoind_uptime'])) { ?>
       <p class="stat"><span class="label">Dogecoin Daemon Uptime:</span> <?php echo $data['bitcoind_uptime']; ?></p>
 <?php } ?>
-<?php if (isset($data['ip_location'])) { ?>
+<?php if (false && isset($data['ip_location'])) { ?>
       <p class="stat">
           <span class="label">Node Location:</span>
 <?php
@@ -151,6 +200,27 @@
 <?php if (isset($data['cache_time']) & $config['use_cache'] === TRUE) { ?>
       <p class="stat"><span class="label">Last Updated:</span> <?php echo date($config['date_format'], $data['cache_time']); ?> (refreshes every <?php echo ($config['max_cache_time']/60); ?> minutes, next at <?php echo date('H:i:s',$data['cache_expiry']) ?>)</p>
 <?php } ?>
+
+  </div>
+
+  <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-2-3">
+
+      <p class="stat"><span class="label">Number of Connections:</span> <?php echo $data['connections']; ?></p>
+<?php if (isset($data['chart'])) { if (count($data['chart']) > $config['stats_min_data_points']) { ?>
+      <div id="connections_chart" style="width: 100%; height: 20%"></div>
+<?php } } ?>
+<?php if (isset($data['bitnodes_info']) === true) { ?>
+      <p class="stat"><span class="label">Average Dogenodes Latency:</span> <?php if ($data['bitnodes_info']['latest_latency']['v'] !== 0) { echo $data['bitnodes_info']['latest_latency']['v'] . "ms"; } else { echo "Unavailable"; } ?></p>
+<?php } ?>
+<p class="stat"><span class="label">Transactions in Mempool:</span> <?php echo $data['mempool_size']; ?></p>
+<?php if (isset($data['chart'])) { if (count($data['chart']) > $config['stats_min_data_points']) { ?>
+      <div id="mempool_chart" style="width: 100%; height: 20%;"></div> 
+<?php } } ?>
+<p class="stat"><span class="label">Mempool Size (MB):</span> <?php echo number_format($data['mempool_bytes'], 4); ?></p>
+<?php if (isset($data['chart'])) { if (count($data['chart']) > $config['stats_min_data_points']) { ?>
+      <div id="mempool_size_chart" style="width: 100%; height: 20%;"></div>
+<?php } } ?>
+
 <?php if (isset($data['peers']) & $config['display_peer_info'] === TRUE) { ?>
   </div>
   <div class="pure-u-1 pure-u-md-1-1 pure-u-lg-1-1" style="margin: 0px auto">
